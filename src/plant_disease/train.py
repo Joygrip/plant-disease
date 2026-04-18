@@ -41,7 +41,7 @@ def parse_args() -> argparse.Namespace:
 
     cfg: dict = {}
     if pre_args.config is not None:
-        with open(pre_args.config) as f:
+        with open(pre_args.config, encoding="utf-8") as f:
             cfg = json.load(f)
 
     p = argparse.ArgumentParser(description="Train a plant disease classifier")

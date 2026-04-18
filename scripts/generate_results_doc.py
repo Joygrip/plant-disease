@@ -44,19 +44,19 @@ TBD = "*[TO BE FILLED AFTER TRAINING]*"
 
 def _read_json(path: Path) -> dict:
     if path.exists():
-        with open(path) as f:
+        with open(path, encoding="utf-8") as f:
             return json.load(f)
     return {}
 
 
 def _read_text(path: Path) -> str:
-    return path.read_text() if path.exists() else TBD
+    return path.read_text(encoding="utf-8") if path.exists() else TBD
 
 
 def _read_csv_rows(path: Path) -> list[dict]:
     if not path.exists():
         return []
-    with open(path, newline="") as f:
+    with open(path, newline="", encoding="utf-8") as f:
         return list(csv.DictReader(f))
 
 
@@ -77,7 +77,7 @@ def _dataset_stats() -> dict:
     splits_path = ROOT / "data" / "splits.json"
     if not splits_path.exists():
         return {"train": TBD, "val": TBD, "test": TBD}
-    with open(splits_path) as f:
+    with open(splits_path, encoding="utf-8") as f:
         splits = json.load(f)
     return {
         "val":  len(splits["val"]),

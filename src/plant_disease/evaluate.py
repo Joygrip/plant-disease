@@ -130,7 +130,7 @@ def main() -> None:
         args.checkpoint.stem + "_meta.json"
     )
     if meta_path.exists():
-        with open(meta_path) as f:
+        with open(meta_path, encoding="utf-8") as f:
             meta = json.load(f)
         class_names: list[str] = meta["class_names"]
     else:

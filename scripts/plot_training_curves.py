@@ -37,7 +37,7 @@ REPORTS_DIR = Path(__file__).resolve().parents[1] / "reports" / "training_curves
 
 def _load_csv(path: Path) -> dict[str, list]:
     """Return dict of column_name → list of values (numeric where possible)."""
-    with open(path, newline="") as f:
+    with open(path, newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         rows = list(reader)
 

@@ -52,7 +52,7 @@ def _load_checkpoint(ckpt_path: Path, device: torch.device):
         class_names = config.CLASS_NAMES
         meta: dict = {}
     else:
-        with open(meta_path) as f:
+        with open(meta_path, encoding="utf-8") as f:
             meta = json.load(f)
         model_name = meta["model"]
         class_names = meta.get("class_names", config.CLASS_NAMES)
@@ -323,6 +323,15 @@ def main() -> None:
     stats_path = REPORTS_DIR / "latency_stats.json"
     with open(stats_path, "w", encoding="utf-8") as f:
         json.dump(dict(zip(names, latency_stats)), f, indent=2)
+
+    # Write per-model summary.json so generate_results_doc.py finds test accuracy
+    # without requiring a separate evaluate.py run.
+    outputs_root = Path(__file__).resolve().parents[1] / "outputs" / "eval"
+    for name, acc, ckpt in zip(names, test_accs, checkpoints):
+        eval_dir = outputs_root / name
+        eval_dir.mkdir(parents=True, exist_ok=True)
+        summary = {"checkpoint": str(ckpt), "test_accuracy": acc}
+        (eval_dir / "summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
 
 
 if __name__ == "__main__":

@@ -66,12 +66,27 @@ _WRITE_TEXT_FILES = [
     "src/plant_disease/evaluate.py",
 ]
 
+_READ_TEXT_FILES = [
+    "scripts/generate_results_doc.py",
+]
+
 _OPEN_WRITE_FILES = [
     "src/plant_disease/error_analysis.py",
     "src/plant_disease/train.py",
     "src/plant_disease/utils.py",
     "scripts/compare_models.py",
     "scripts/prepare_splits.py",
+]
+
+_OPEN_READ_FILES = [
+    "scripts/generate_results_doc.py",
+    "scripts/compare_models.py",
+    "scripts/plot_training_curves.py",
+    "scripts/predict.py",
+    "src/plant_disease/evaluate.py",
+    "src/plant_disease/data.py",
+    "src/plant_disease/train.py",
+    "src/plant_disease/error_analysis.py",
 ]
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -103,6 +118,48 @@ def test_no_open_write_without_encoding():
                     raise AssertionError(
                         f"{rel}:{lineno} — open() write/append is missing encoding='utf-8':\n  {stripped}"
                     )
+
+
+def test_no_read_text_without_encoding():
+    """Every read_text() call in production code must specify encoding='utf-8'."""
+    for rel in _READ_TEXT_FILES:
+        text = _source(rel)
+        for lineno, line in enumerate(text.splitlines(), 1):
+            stripped = line.strip()
+            # match only method calls (.read_text()), not _read_text() helper calls
+            if ".read_text(" in stripped and "encoding" not in stripped:
+                raise AssertionError(
+                    f"{rel}:{lineno} — read_text() is missing encoding='utf-8':\n  {stripped}"
+                )
+
+
+def test_no_open_read_without_encoding():
+    """Every open() used for reading must specify encoding='utf-8'.
+
+    Matches open() calls that are NOT binary (no 'b' mode) and do not yet
+    have an encoding= keyword.  Image.open() and csv.writer() binary modes
+    are excluded because they contain 'b' or are in the binary-mode list.
+    """
+    for rel in _OPEN_READ_FILES:
+        text = _source(rel)
+        for lineno, line in enumerate(text.splitlines(), 1):
+            stripped = line.strip()
+            if "open(" not in stripped:
+                continue
+            # skip binary-mode opens (rb, wb, ab, etc.)
+            if '"rb"' in stripped or "'rb'" in stripped:
+                continue
+            # skip write/append opens (covered by the write test)
+            if '"w"' in stripped or '"a"' in stripped:
+                continue
+            # skip Image.open() — PIL binary read, no encoding
+            if "Image.open(" in stripped:
+                continue
+            # must have explicit encoding for all remaining text-mode opens
+            if "encoding" not in stripped:
+                raise AssertionError(
+                    f"{rel}:{lineno} — open() read is missing encoding='utf-8':\n  {stripped}"
+                )
 
 
 def test_file_handler_uses_utf8_encoding():
@@ -199,10 +256,7 @@ def test_logger_writes_checkmark_to_stringio():
 
 def test_main_source_contains_reconfigure_calls():
     """Confirm main() reconfigures both stdout and stderr to utf-8."""
-    import inspect
-    from plant_disease import train
-
-    src = inspect.getsource(train.main)
+    src = _source("src/plant_disease/train.py")
     assert 'sys.stdout.reconfigure(encoding="utf-8")' in src, (
         "main() must call sys.stdout.reconfigure(encoding='utf-8')"
     )

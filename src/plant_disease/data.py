@@ -84,7 +84,7 @@ def _load_split_samples(
             f"Splits file not found: {config.SPLITS_FILE}\n"
             "Run  python scripts/prepare_splits.py  first."
         )
-    with open(config.SPLITS_FILE) as f:
+    with open(config.SPLITS_FILE, encoding="utf-8") as f:
         splits = json.load(f)
 
     samples: list[tuple[Path, int]] = []

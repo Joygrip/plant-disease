@@ -424,7 +424,7 @@ def main() -> None:
 
     meta_path = args.checkpoint.with_name(args.checkpoint.stem + "_meta.json")
     if meta_path.exists():
-        with open(meta_path) as f:
+        with open(meta_path, encoding="utf-8") as f:
             meta = json.load(f)
         model_name  = meta["model"]
         class_names = meta.get("class_names", config.CLASS_NAMES)
