@@ -1,0 +1,92 @@
+[
+  {
+    "true_class": "Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot",
+    "pred_class": "Corn_(maize)___Northern_Leaf_Blight",
+    "count_ab": 11,
+    "count_ba": 0,
+    "total": 11,
+    "symmetric": false,
+    "same_species": true
+  },
+  {
+    "true_class": "Potato___Late_blight",
+    "pred_class": "Tomato___Late_blight",
+    "count_ab": 1,
+    "count_ba": 2,
+    "total": 3,
+    "symmetric": true,
+    "same_species": false
+  },
+  {
+    "true_class": "Tomato___Spider_mites Two-spotted_spider_mite",
+    "pred_class": "Tomato___Target_Spot",
+    "count_ab": 1,
+    "count_ba": 1,
+    "total": 2,
+    "symmetric": true,
+    "same_species": true
+  },
+  {
+    "true_class": "Tomato___Spider_mites Two-spotted_spider_mite",
+    "pred_class": "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+    "count_ab": 1,
+    "count_ba": 0,
+    "total": 1,
+    "symmetric": false,
+    "same_species": true
+  },
+  {
+    "true_class": "Tomato___Early_blight",
+    "pred_class": "Tomato___Target_Spot",
+    "count_ab": 0,
+    "count_ba": 1,
+    "total": 1,
+    "symmetric": false,
+    "same_species": true
+  },
+  {
+    "true_class": "Tomato___Early_blight",
+    "pred_class": "Tomato___Late_blight",
+    "count_ab": 0,
+    "count_ba": 1,
+    "total": 1,
+    "symmetric": false,
+    "same_species": true
+  },
+  {
+    "true_class": "Tomato___Bacterial_spot",
+    "pred_class": "Tomato___Target_Spot",
+    "count_ab": 0,
+    "count_ba": 1,
+    "total": 1,
+    "symmetric": false,
+    "same_species": true
+  },
+  {
+    "true_class": "Potato___healthy",
+    "pred_class": "Raspberry___healthy",
+    "count_ab": 0,
+    "count_ba": 1,
+    "total": 1,
+    "symmetric": false,
+    "same_species": false
+  },
+  {
+    "true_class": "Pepper,_bell___healthy",
+    "pred_class": "Tomato___Tomato_mosaic_virus",
+    "count_ab": 0,
+    "count_ba": 1,
+    "total": 1,
+    "symmetric": false,
+    "same_species": false
+  },
+  {
+    "true_class": "Peach___healthy",
+    "pred_class": "Tomato___Target_Spot",
+    "count_ab": 1,
+    "count_ba": 0,
+    "total": 1,
+    "symmetric": false,
+    "same_species": false
+  }
+]

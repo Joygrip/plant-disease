@@ -358,6 +358,12 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> None:
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stderr.reconfigure(encoding="utf-8")
+    except (AttributeError, Exception):
+        pass
+
     args = parse_args()
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -367,7 +373,7 @@ def main() -> None:
         baseline_eval_dir=args.baseline_eval_dir,
         mobilenet_eval_dir=args.mobilenet_eval_dir,
     )
-    args.output.write_text(doc)
+    args.output.write_text(doc, encoding="utf-8")
     print(f"Results document written → {args.output}")
 
 

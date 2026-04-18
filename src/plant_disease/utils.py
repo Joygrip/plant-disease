@@ -36,7 +36,7 @@ def get_logger(name: str, log_file: Path | None = None) -> logging.Logger:
         logger.addHandler(sh)
 
     if log_file is not None:
-        fh = logging.FileHandler(log_file)
+        fh = logging.FileHandler(log_file, encoding="utf-8")
         fh.setFormatter(fmt)
         logger.addHandler(fh)
 
@@ -52,12 +52,12 @@ class CSVLogger:
         self._write_header()
 
     def _write_header(self) -> None:
-        with open(self.path, "w", newline="") as f:
+        with open(self.path, "w", newline="", encoding="utf-8") as f:
             writer = csv.DictWriter(f, fieldnames=self.fieldnames)
             writer.writeheader()
 
     def log(self, row: dict) -> None:
-        with open(self.path, "a", newline="") as f:
+        with open(self.path, "a", newline="", encoding="utf-8") as f:
             writer = csv.DictWriter(f, fieldnames=self.fieldnames)
             writer.writerow(row)
 

@@ -237,6 +237,12 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> None:
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stderr.reconfigure(encoding="utf-8")
+    except (AttributeError, Exception):
+        pass
+
     args = parse_args()
     seed_everything(args.seed)
     device = get_device()
@@ -310,12 +316,12 @@ def main() -> None:
         class_names=class_names,
         machine_info=machine_info,
     )
-    report_path.write_text(report)
+    report_path.write_text(report, encoding="utf-8")
     print(f"\nReport written → {report_path}")
 
     # Also write raw latency stats as JSON for generate_results_doc.py to read
     stats_path = REPORTS_DIR / "latency_stats.json"
-    with open(stats_path, "w") as f:
+    with open(stats_path, "w", encoding="utf-8") as f:
         json.dump(dict(zip(names, latency_stats)), f, indent=2)
 
 

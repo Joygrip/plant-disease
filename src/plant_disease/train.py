@@ -172,7 +172,7 @@ def _save_checkpoint(
             "unfreeze_blocks": args.unfreeze_blocks,
         },
     }
-    with open(output_dir / f"{model_name}_best_meta.json", "w") as f:
+    with open(output_dir / f"{model_name}_best_meta.json", "w", encoding="utf-8") as f:
         json.dump(meta, f, indent=2)
 
 
@@ -230,7 +230,7 @@ def _write_run_info(
         "git_commit": _get_git_commit(),
         "config": vars(args),
     }
-    with open(output_dir / f"{model_name}_run_info.json", "w") as f:
+    with open(output_dir / f"{model_name}_run_info.json", "w", encoding="utf-8") as f:
         json.dump(run_info, f, indent=2, default=str)
 
 

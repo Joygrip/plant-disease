@@ -163,7 +163,7 @@ def main() -> None:
     # --- Per-class report ---
     report = classification_report(labels, preds, target_names=class_names, digits=4)
     report_path = args.output_dir / "classification_report.txt"
-    report_path.write_text(report)
+    report_path.write_text(report, encoding="utf-8")
     logger.info(f"Classification report → {report_path}")
     print(report)
 
@@ -178,7 +178,7 @@ def main() -> None:
     lines = ["Top-10 most confused class pairs\n", "=" * 60 + "\n"]
     for rank, (true_cls, pred_cls, count) in enumerate(pairs, 1):
         lines.append(f"  {rank:2d}. {count:4d}×  {true_cls}  →  {pred_cls}\n")
-    confused_path.write_text("".join(lines))
+    confused_path.write_text("".join(lines), encoding="utf-8")
     logger.info(f"Confused pairs → {confused_path}")
     print("".join(lines))
 
@@ -191,7 +191,7 @@ def main() -> None:
             {"true": t, "pred": p, "count": c} for t, p, c in pairs
         ],
     }
-    (args.output_dir / "summary.json").write_text(json.dumps(summary, indent=2))
+    (args.output_dir / "summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
     logger.info("Evaluation complete.")
 
 

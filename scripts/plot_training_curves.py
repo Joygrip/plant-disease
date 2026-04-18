@@ -185,6 +185,12 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> None:
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stderr.reconfigure(encoding="utf-8")
+    except (AttributeError, Exception):
+        pass
+
     args = parse_args()
 
     datasets, labels, transitions_list = [], [], []

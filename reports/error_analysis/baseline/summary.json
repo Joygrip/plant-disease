@@ -1,0 +1,205 @@
+{
+  "model": "baseline",
+  "num_test_samples": 8795,
+  "overall_accuracy": 0.9970437748720864,
+  "top_confused_pairs": [
+    {
+      "true_class": "Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot",
+      "pred_class": "Corn_(maize)___Northern_Leaf_Blight",
+      "count_ab": 11,
+      "count_ba": 0,
+      "total": 11,
+      "symmetric": false,
+      "same_species": true
+    },
+    {
+      "true_class": "Potato___Late_blight",
+      "pred_class": "Tomato___Late_blight",
+      "count_ab": 1,
+      "count_ba": 2,
+      "total": 3,
+      "symmetric": true,
+      "same_species": false
+    },
+    {
+      "true_class": "Tomato___Spider_mites Two-spotted_spider_mite",
+      "pred_class": "Tomato___Target_Spot",
+      "count_ab": 1,
+      "count_ba": 1,
+      "total": 2,
+      "symmetric": true,
+      "same_species": true
+    },
+    {
+      "true_class": "Tomato___Spider_mites Two-spotted_spider_mite",
+      "pred_class": "Tomato___Tomato_Yellow_Leaf_Curl_Virus",
+      "count_ab": 1,
+      "count_ba": 0,
+      "total": 1,
+      "symmetric": false,
+      "same_species": true
+    },
+    {
+      "true_class": "Tomato___Early_blight",
+      "pred_class": "Tomato___Target_Spot",
+      "count_ab": 0,
+      "count_ba": 1,
+      "total": 1,
+      "symmetric": false,
+      "same_species": true
+    },
+    {
+      "true_class": "Tomato___Early_blight",
+      "pred_class": "Tomato___Late_blight",
+      "count_ab": 0,
+      "count_ba": 1,
+      "total": 1,
+      "symmetric": false,
+      "same_species": true
+    },
+    {
+      "true_class": "Tomato___Bacterial_spot",
+      "pred_class": "Tomato___Target_Spot",
+      "count_ab": 0,
+      "count_ba": 1,
+      "total": 1,
+      "symmetric": false,
+      "same_species": true
+    },
+    {
+      "true_class": "Potato___healthy",
+      "pred_class": "Raspberry___healthy",
+      "count_ab": 0,
+      "count_ba": 1,
+      "total": 1,
+      "symmetric": false,
+      "same_species": false
+    },
+    {
+      "true_class": "Pepper,_bell___healthy",
+      "pred_class": "Tomato___Tomato_mosaic_virus",
+      "count_ab": 0,
+      "count_ba": 1,
+      "total": 1,
+      "symmetric": false,
+      "same_species": false
+    },
+    {
+      "true_class": "Peach___healthy",
+      "pred_class": "Tomato___Target_Spot",
+      "count_ab": 1,
+      "count_ba": 0,
+      "total": 1,
+      "symmetric": false,
+      "same_species": false
+    }
+  ],
+  "same_species_confusion_pairs": 6,
+  "cross_species_confusion_pairs": 4,
+  "confidence_stats": {
+    "mean_confidence_correct": 0.9958752154800963,
+    "mean_confidence_wrong": 0.7124554113699839,
+    "n_wrong_high_confidence": 4,
+    "frac_wrong_high_confidence": 0.15384615384615385
+  },
+  "per_species_rows": [
+    {
+      "species": "Apple",
+      "num_classes": 4,
+      "num_test_images": 972,
+      "species_accuracy": 1.0,
+      "disease_accuracy": 1.0
+    },
+    {
+      "species": "Blueberry",
+      "num_classes": 1,
+      "num_test_images": 227,
+      "species_accuracy": 1.0,
+      "disease_accuracy": 1.0
+    },
+    {
+      "species": "Cherry_(including_sour)",
+      "num_classes": 2,
+      "num_test_images": 439,
+      "species_accuracy": 1.0,
+      "disease_accuracy": 1.0
+    },
+    {
+      "species": "Corn_(maize)",
+      "num_classes": 4,
+      "num_test_images": 916,
+      "species_accuracy": 0.9989,
+      "disease_accuracy": 0.988
+    },
+    {
+      "species": "Grape",
+      "num_classes": 4,
+      "num_test_images": 903,
+      "species_accuracy": 1.0,
+      "disease_accuracy": 1.0
+    },
+    {
+      "species": "Orange",
+      "num_classes": 1,
+      "num_test_images": 252,
+      "species_accuracy": 1.0,
+      "disease_accuracy": 1.0
+    },
+    {
+      "species": "Peach",
+      "num_classes": 2,
+      "num_test_images": 446,
+      "species_accuracy": 0.9978,
+      "disease_accuracy": 1.0
+    },
+    {
+      "species": "Pepper,_bell",
+      "num_classes": 2,
+      "num_test_images": 488,
+      "species_accuracy": 0.998,
+      "disease_accuracy": 1.0
+    },
+    {
+      "species": "Potato",
+      "num_classes": 3,
+      "num_test_images": 714,
+      "species_accuracy": 0.9972,
+      "disease_accuracy": 1.0
+    },
+    {
+      "species": "Raspberry",
+      "num_classes": 1,
+      "num_test_images": 223,
+      "species_accuracy": 0.9955,
+      "disease_accuracy": 1.0
+    },
+    {
+      "species": "Soybean",
+      "num_classes": 1,
+      "num_test_images": 253,
+      "species_accuracy": 1.0,
+      "disease_accuracy": 1.0
+    },
+    {
+      "species": "Squash",
+      "num_classes": 1,
+      "num_test_images": 217,
+      "species_accuracy": 1.0,
+      "disease_accuracy": 1.0
+    },
+    {
+      "species": "Strawberry",
+      "num_classes": 2,
+      "num_test_images": 450,
+      "species_accuracy": 1.0,
+      "disease_accuracy": 1.0
+    },
+    {
+      "species": "Tomato",
+      "num_classes": 10,
+      "num_test_images": 2295,
+      "species_accuracy": 0.9987,
+      "disease_accuracy": 0.9974
+    }
+  ]
+}

@@ -60,7 +60,7 @@ def main(seed: int = config.SEED) -> None:
 
     splits = {"val": val_paths, "test": test_paths, "seed": seed}
     config.SPLITS_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(config.SPLITS_FILE, "w") as f:
+    with open(config.SPLITS_FILE, "w", encoding="utf-8") as f:
         json.dump(splits, f, indent=2)
 
     print(f"\nDone. {len(val_paths)} val, {len(test_paths)} test ({total} total)")

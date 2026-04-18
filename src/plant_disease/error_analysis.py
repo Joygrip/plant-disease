@@ -16,6 +16,7 @@ import argparse
 import csv
 import json
 import math
+import sys
 from collections import defaultdict
 from pathlib import Path
 
@@ -310,7 +311,7 @@ def save_per_species_rollup(
         })
 
     out_path = output_dir / "per_species.csv"
-    with open(out_path, "w", newline="") as f:
+    with open(out_path, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(
             f,
             fieldnames=["species", "num_classes", "num_test_images",
@@ -357,7 +358,7 @@ def run_error_analysis(
         print(f"  {label:<70}  {p['count_ab']:>5}  {p['count_ba']:>5}  {sym_flag:>5}  {sp_flag:>7}")
 
     confusion_pairs_path = output_dir / "confusion_pairs.json"
-    with open(confusion_pairs_path, "w") as f:
+    with open(confusion_pairs_path, "w", encoding="utf-8") as f:
         json.dump(pairs, f, indent=2)
 
     print("\n[3/4] Misclassification galleries (top 5 pairs)…")
@@ -388,7 +389,7 @@ def run_error_analysis(
         "confidence_stats": conf_stats,
         "per_species_rows": species_rows,
     }
-    with open(output_dir / "summary.json", "w") as f:
+    with open(output_dir / "summary.json", "w", encoding="utf-8") as f:
         json.dump(summary, f, indent=2)
 
     return summary
@@ -411,6 +412,12 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> None:
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stderr.reconfigure(encoding="utf-8")
+    except (AttributeError, Exception):
+        pass
+
     args = parse_args()
     seed_everything(args.seed)
     device = get_device()
