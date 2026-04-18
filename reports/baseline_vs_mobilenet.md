@@ -11,9 +11,9 @@
 | Total parameters | 398,662 | 2,272,550 |
 | Test accuracy | 0.9970 (99.70%) | 0.9968 (99.68%) |
 | Macro F1 | 0.9970 | 0.9968 |
-| CPU latency — median (ms) | 40.72 | 19.05 |
-| CPU latency — p95 (ms) | 44.26 | 21.53 |
-| CPU latency — mean (ms) | 40.71 | 19.23 |
+| CPU latency — median (ms) | 40.30 | 20.02 |
+| CPU latency — p95 (ms) | 45.50 | 24.19 |
+| CPU latency — mean (ms) | 40.83 | 20.51 |
 | Best epoch (baseline) | 24 (stage 1) | — |
 | Best val acc (baseline) | 0.9972 | — |
 | Best epoch (mobilenet_v2) | — | 28 (stage 2) |
