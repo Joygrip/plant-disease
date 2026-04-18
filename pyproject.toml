@@ -1,0 +1,62 @@
+[project]
+name = "plant-disease"
+version = "0.1.0"
+description = "Plant disease classification — baseline CNN + transfer learning pipeline"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+    "torch>=2.8.0",
+    "torchvision>=0.23.0",
+    "numpy>=1.26.0",
+    "scikit-learn>=1.4.0",
+    "matplotlib>=3.8.0",
+    "seaborn>=0.13.0",
+    "Pillow>=10.0.0",
+    "tqdm>=4.66.0",
+    "typer>=0.12.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-cov>=5.0.0",
+    "kaggle>=1.6.0",
+]
+
+[project.scripts]
+train = "plant_disease.train:app"
+evaluate = "plant_disease.evaluate:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/plant_disease"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v"
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+]
+
+# ---------------------------------------------------------------------------
+# CUDA wheels for Windows + Linux.
+# uv will pull from the pytorch-cu128 index on those platforms and fall back
+# to PyPI (CPU wheel) on macOS. cu128 is the current Windows+cp313 channel
+# (pytorch.org stopped shipping Windows cu121 wheels after torch 2.4.x).
+# For older GPUs/drivers: change the URL to /cu124 or /cu126 as needed.
+# ---------------------------------------------------------------------------
+
+[tool.uv.sources]
+torch = [
+  { index = "pytorch-cu128", marker = "sys_platform == 'win32' or sys_platform == 'linux'" },
+]
+torchvision = [
+  { index = "pytorch-cu128", marker = "sys_platform == 'win32' or sys_platform == 'linux'" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
