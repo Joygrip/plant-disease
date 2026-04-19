@@ -8,7 +8,7 @@ from pathlib import Path
 # Paths
 # ---------------------------------------------------------------------------
 ROOT = Path(__file__).resolve().parents[2]  # plant-disease/
-DATA_ROOT = ROOT / "data" / "New Plant Diseases Dataset(Augmented)"
+DATA_ROOT = ROOT / "data" / "New Plant Diseases Dataset(Augmented)" / "New Plant Diseases Dataset(Augmented)"
 TRAIN_DIR = DATA_ROOT / "train"
 VALID_DIR = DATA_ROOT / "valid"
 SPLITS_FILE = ROOT / "data" / "splits.json"

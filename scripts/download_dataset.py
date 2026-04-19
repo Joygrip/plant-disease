@@ -39,7 +39,7 @@ import zipfile
 from pathlib import Path
 
 DATASET_SLUG = "vipoooool/new-plant-diseases-dataset"
-EXPECTED_SUBDIR = "New Plant Diseases Dataset(Augmented)"
+EXPECTED_SUBDIR = "New Plant Diseases Dataset(Augmented)/New Plant Diseases Dataset(Augmented)"
 EXPECTED_SPLITS = ["train", "valid"]
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -151,8 +151,13 @@ def _download(data_dir: Path) -> Path:
 
 def _unzip(zip_path: Path, data_dir: Path) -> None:
     print(f"Extracting {zip_path.name} ...")
+    
+    extract_dir = str(data_dir.resolve())
+    if os.name == "nt" and not extract_dir.startswith("\\\\?\\"):
+        extract_dir = "\\\\?\\" + extract_dir
+        
     with zipfile.ZipFile(zip_path, "r") as zf:
-        zf.extractall(data_dir)
+        zf.extractall(extract_dir)
     zip_path.unlink()
     print("Zip removed.")
 
