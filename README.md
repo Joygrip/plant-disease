@@ -1,6 +1,22 @@
 # Plant Disease Classification
 
+## About
+
+A machine learning system that classifies plant diseases from leaf photos.
+Point your phone camera at a leaf and get an instant diagnosis — 38 disease
+classes covered, ~99.7% accuracy on the test set. This repository contains
+the training pipeline and inference script. A mobile/web interface is planned
+as the next development step.
+
 Diploma project. Two models compared: a small baseline CNN (~1.2 M params) and MobileNetV2 (~2.3 M params) with two-stage transfer learning, both trained on the [New Plant Diseases Dataset](https://www.kaggle.com/datasets/vipoooool/new-plant-diseases-dataset) (38 classes, ~70 k training images).
+
+## Requirements
+
+**To train / evaluate:** GPU with CUDA support recommended (tested on CUDA 12.8),
+Python 3.13, ~10 GB disk space for the dataset.
+
+**To run inference only:** Any machine with Python 3.13. CPU is sufficient
+for single-image prediction.
 
 ## Setup
 
@@ -116,6 +132,12 @@ Output: `reports/baseline_vs_mobilenet.md`
 |-------|--------------|
 | Baseline CNN | 99.70% |
 | MobileNetV2 | 99.68% |
+
+## Model choice
+
+MobileNetV2 was selected as the deployment model. Despite marginally lower
+accuracy (99.68% vs 99.70%), it offers better trade-offs for mobile inference
+due to its depthwise separable convolutions and smaller memory footprint.
 
 ## Tests
 
