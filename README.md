@@ -1,3 +1,4 @@
+#test
 # Plant Disease Classification
 
 Diploma project. Two models compared: a small baseline CNN (~1.2 M params) and MobileNetV2 (~2.3 M params) with two-stage transfer learning, both trained on the [New Plant Diseases Dataset](https://www.kaggle.com/datasets/vipoooool/new-plant-diseases-dataset) (38 classes, ~70 k training images).
