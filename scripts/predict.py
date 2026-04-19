@@ -15,7 +15,6 @@ Exit codes:
 import argparse
 import json
 import sys
-import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
@@ -24,13 +23,12 @@ import torch
 import torch.nn as nn
 from PIL import Image, UnidentifiedImageError
 
-from plant_disease import config
-from plant_disease.data import _eval_transform
-from plant_disease.models import build_model
+from plant_disease.inference import load_checkpoint as _lib_load_checkpoint
+from plant_disease.inference import run_inference
 
 
 # ---------------------------------------------------------------------------
-# Model loading
+# Model loading (CLI wrapper — translates exceptions to sys.exit(1))
 # ---------------------------------------------------------------------------
 
 def _load_checkpoint(
@@ -38,36 +36,21 @@ def _load_checkpoint(
     device: torch.device,
 ) -> tuple[nn.Module, list[str]]:
     """
-    Return (model, class_names) from a checkpoint and its sidecar _meta.json.
-
-    If no metadata file exists, model type is inferred from the filename and
-    class names fall back to config.CLASS_NAMES.
+    Return (model, class_names) from a checkpoint, printing errors to stderr
+    and exiting with code 1 on failure.
     """
-    if not checkpoint.exists():
+    try:
+        return _lib_load_checkpoint(
+            checkpoint,
+            device,
+            warn_callback=lambda msg: print(f"WARNING: {msg}", file=sys.stderr),
+        )
+    except FileNotFoundError:
         print(f"ERROR: checkpoint not found: {checkpoint}", file=sys.stderr)
         sys.exit(1)
-
-    meta_path = checkpoint.with_name(checkpoint.stem + "_meta.json")
-    if meta_path.exists():
-        with open(meta_path, encoding="utf-8") as f:
-            meta = json.load(f)
-        model_name  = meta["model"]
-        class_names = meta.get("class_names", config.CLASS_NAMES)
-    else:
-        model_name  = "baseline" if "baseline" in checkpoint.stem else "mobilenet_v2"
-        class_names = config.CLASS_NAMES
-        print(
-            f"WARNING: no metadata at {meta_path} — "
-            f"inferring model type as '{model_name}'",
-            file=sys.stderr,
-        )
-
-    model = build_model(model_name, num_classes=len(class_names))
-    state = torch.load(checkpoint, map_location="cpu", weights_only=True)
-    model.load_state_dict(state)
-    model = model.to(device)
-    model.eval()
-    return model, class_names
+    except Exception as exc:
+        print(f"ERROR: cannot load checkpoint {checkpoint}: {exc}", file=sys.stderr)
+        sys.exit(1)
 
 
 # ---------------------------------------------------------------------------
@@ -110,31 +93,8 @@ def predict(
         print(f"ERROR: cannot open {image_path}: {exc}", file=sys.stderr)
         sys.exit(1)
 
-    tf     = _eval_transform()
-    tensor = tf(img).unsqueeze(0).to(device)          # (1, 3, 224, 224)
-
     model, class_names = _load_checkpoint(checkpoint, device)
-
-    t0 = time.perf_counter()
-    with torch.no_grad():
-        logits = model(tensor)
-    inference_ms = (time.perf_counter() - t0) * 1000.0
-
-    probs   = torch.softmax(logits, dim=1)[0]         # (num_classes,)
-    k       = min(top_k, len(class_names))
-    top_probs, top_indices = probs.topk(k)
-
-    top_list = [
-        {"class": class_names[idx.item()], "confidence": prob.item()}
-        for prob, idx in zip(top_probs, top_indices)
-    ]
-
-    return {
-        "class_name":   top_list[0]["class"],
-        "confidence":   top_list[0]["confidence"],
-        "top_k":        top_list,
-        "inference_ms": round(inference_ms, 2),
-    }
+    return run_inference(img, model, class_names, top_k)
 
 
 # ---------------------------------------------------------------------------

@@ -140,6 +140,62 @@ python scripts/predict.py models/mobilenet_v2_best.pt path/to/leaf.jpg
 python scripts/predict.py models/mobilenet_v2_best.pt path/to/leaf.jpg --top-k 5
 ```
 
+## Running the API
+
+Install dependencies (includes FastAPI, uvicorn, pydantic-settings):
+
+```bash
+uv pip install -e ".[dev]"
+```
+
+Start the backend from the `plant-disease/` directory:
+
+```bash
+uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+Interactive docs: http://localhost:8000/docs
+
+Test the endpoints:
+
+```bash
+# Health check
+curl http://localhost:8000/health
+
+# Predict (curl)
+curl -X POST http://localhost:8000/predict \
+  -F "image=@path/to/leaf.jpg" \
+  -F "model=mobilenet_v2"
+
+# Predict (PowerShell)
+Invoke-RestMethod -Uri http://localhost:8000/predict `
+  -Method POST `
+  -Form @{ image = Get-Item path\to\leaf.jpg; model = "mobilenet_v2" }
+
+# List classes
+curl http://localhost:8000/classes
+```
+
+### API environment variables
+
+| Variable | Default | Description |
+|---|---|---|
+| `MODELS_DIR` | `./models` | Directory containing `.pt` checkpoint files |
+| `MAX_UPLOAD_MB` | `10` | Maximum accepted image size in MB |
+| `DEFAULT_MODEL` | `mobilenet_v2` | Model used when `model` form field is omitted |
+| `CORS_ORIGINS` | `http://localhost:3000,http://localhost:5173` | Comma-separated allowed origins |
+| `LOG_LEVEL` | `INFO` | Python logging level |
+
+Override via env var or a `.env` file in `plant-disease/`.
+
+### API tests
+
+```bash
+pytest tests/test_api_health.py tests/test_api_predict.py tests/test_api_classes.py -v
+```
+
+Add `-m "not slow"` to skip tests that require real checkpoints and dataset images (the default).
+
 ## Troubleshooting
 
 **`torch.cuda.is_available()` returns False on Windows** — you got the CPU wheel. Force the CUDA build:
