@@ -15,6 +15,7 @@ class Settings(BaseSettings):
     default_model: str = "mobilenet_v2"
     cors_origins: str = "http://localhost:3000,http://localhost:5173"
     log_level: str = "INFO"
+    low_confidence_threshold: float = 0.60
 
     @property
     def cors_origins_list(self) -> list[str]:

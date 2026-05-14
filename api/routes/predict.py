@@ -76,6 +76,10 @@ async def predict(
         for entry in result["top_k"]
     ]
 
+    warning = None
+    if confidence < settings.low_confidence_threshold:
+        warning = "Low confidence prediction — result may be unreliable"
+
     return JSONResponse({
         "prediction": result["class_name"],
         "prediction_display": format_display_name(result["class_name"]),
@@ -83,6 +87,8 @@ async def predict(
         "confidence_pct": round(confidence * 100, 1),
         "top_k": top_k_entries,
         "inference_ms": result["inference_ms"],
+        "model_used": requested,
         "model": requested,
         "image_size": result["image_size"],
+        "warning": warning,
     })

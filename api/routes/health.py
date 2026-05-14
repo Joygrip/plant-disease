@@ -1,8 +1,8 @@
 import datetime
-from pathlib import Path
+import time
 
 import torch
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 
 from api.config import settings
 
@@ -10,8 +10,8 @@ router = APIRouter()
 
 
 @router.get("/health", tags=["ops"])
-async def health() -> dict:
-    """Liveness check — does not require the model to be loaded."""
+async def health(request: Request) -> dict:
+    """Liveness check — reports loaded models and uptime."""
     models_dir = settings.models_dir
     ckpt = models_dir / "mobilenet_v2_best.pt"
 
@@ -23,10 +23,19 @@ async def health() -> dict:
     else:
         age = "unknown"
 
+    loaded_models = list(getattr(request.app.state, "models", {}).keys())
+    startup_time = getattr(request.app.state, "startup_time", None)
+    uptime = round(time.time() - startup_time, 1) if startup_time else 0.0
+
+    status = "ok" if loaded_models else "starting"
+
     return {
-        "status": "ok",
+        "status": status,
         "model": settings.default_model,
+        "models_loaded": loaded_models,
+        "default_model": settings.default_model,
         "checkpoint_age": age,
         "torch_version": torch.__version__,
         "cuda_available": torch.cuda.is_available(),
+        "uptime_seconds": uptime,
     }

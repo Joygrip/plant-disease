@@ -141,6 +141,46 @@ python scripts/predict.py models/mobilenet_v2_best.pt path/to/leaf.jpg
 python scripts/predict.py models/mobilenet_v2_best.pt path/to/leaf.jpg --top-k 5
 ```
 
+## Running the app
+
+### Option A: Docker (recommended)
+
+```bash
+docker-compose up --build
+```
+
+Then open http://localhost:3000 in your browser.
+
+### Option B: Development mode
+
+Start the API:
+```bash
+uvicorn api.main:app --reload --port 8000
+```
+
+Start the frontend:
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Open http://localhost:5173
+
+### Testing the API directly
+
+```bash
+# Health check
+curl http://localhost:8000/health
+
+# Predict (replace path with a real image)
+curl -X POST http://localhost:8000/predict \
+  -F "image=@data/New Plant Diseases Dataset(Augmented)/valid/Tomato___Late_blight/005a2c1f-4e15-49e4-9e5c-61dc3ecf9708___RS_Late.B 5096.JPG"
+
+# Interactive docs
+open http://localhost:8000/docs
+```
+
 ## Running the API
 
 Install dependencies (includes FastAPI, uvicorn, pydantic-settings):

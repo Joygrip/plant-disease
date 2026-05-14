@@ -64,6 +64,7 @@ async def lifespan(app: FastAPI):
             f"No model checkpoints found in {models_dir} — cannot start API"
         )
 
+    app.state.startup_time = time.time()
     logger.info("Startup complete. Loaded models: %s", list(app.state.models.keys()))
     yield
     # shutdown: nothing to clean up for PyTorch CPU models
